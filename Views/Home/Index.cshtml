@@ -5,47 +5,69 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-<p>
-    <a asp-controller="Avails" asp-action="Create">Create New</a>
-    <a asp-controller="Avails" asp-action="Update">Update or Delete Appointment</a>
-</p>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+<style>
+    * {
+        font-family: 'Roboto Mono', monospace;
+    }
+</style>
+    <p>
+        <a asp-controller="Avails" asp-action="Create">Create New</a>
+        <a asp-controller="Avails" asp-action="Update">Update or Delete Appointment</a>
+    </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Day</th>
-            <th>Name</th>
-            <th>Time</th>
-            <th>Location</th>
-        </tr>
-    </thead>
-    @for (int i = 0; i < ViewBag.next5.Count; i += 1)
-    {
-        <tr><td>@DateTime.Now.AddDays(i).ToShortDateString()</td></tr>
-        <tbody>
-            @for (int j = 0; j < ViewBag.next5[i].Count; j += 1)
-            {
-                <tr>
-                    <td></td>
-                    <td>
-                        @{ String name = ViewBag.next5[i][j].Name;}
-                        @{ int length = name.Length;}
-                        @{ String hidden = name.Substring(0, 3) + new string('X', 10);}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Name</th>
+                <th>Time</th>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <th>Email</th>
+                    <th>Notes</th>
+                    <th>Commands</th>
+                }
+            </tr>
+        </thead>
+        @for (int i = 0; i < ViewBag.next5.Count; i += 1)
+        {
+            <tr><td>@DateTime.Now.AddDays(i).ToShortDateString()</td></tr>
+            <tbody>
+                @for (int j = 0; j < ViewBag.next5[i].Count; j += 1)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{ String name = ViewBag.next5[i][j].Name;}
+                            @{ int length = name.Length;}
+                            @{ String hidden = name.Substring(0, 3) + new string('X', 10);}
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                @name
+                            }
+                            else
+                            {
+                                @hidden
+                            }
+
+                        </td>
+                        <td>
+                            @ViewBag.next5[i][j].Time.ToShortTimeString()
+                        </td>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            @name
+                            <td>@ViewBag.next5[i][j].Email</td>
+                            <td>@ViewBag.next5[i][j].Note</td>
+                            <td>
+                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:blue" asp-controller="Avails" asp-action="Edit" asp-route-id="@ViewBag.next5[i][j].Id">Edit</button>
+                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:green" asp-controller="Avails" asp-action="Details" asp-route-id="@ViewBag.next5[i][j].Id">Details</button>
+                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:red" asp-controller="Avails" asp-action="Edit" asp-route-id="@ViewBag.next5[i][j].Id">Delete</button>
+                            </td>
                         }
-                        else
-                        {
-                            @hidden
-                        }
-
-                    </td>
-                    <td>
-                        @ViewBag.next5[i][j].Time.ToShortTimeString()
-                    </td>
-                </tr>
-            }
-        </tbody>
-    }
-</table>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
