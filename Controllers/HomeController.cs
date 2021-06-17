@@ -49,9 +49,16 @@ namespace Availibility2.Controllers
                     days[(int)delta].Add(i);
                 }
             }
-
+            sortNestedArr(days);
             return days;
 
+        }
+        public void sortNestedArr(List<List<Avail>> arr)
+        {
+            foreach (var a in arr)
+            {
+                a.Sort((a, b) => DateTime.Compare(a.Time, b.Time));
+            }
         }
 
         public IActionResult Privacy()
