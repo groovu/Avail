@@ -7,7 +7,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Create New</a>
+    <button type="submit" value="Submit" class="btn btn-primary" style="background-color:lightseagreen" asp-controller="Avails" asp-action="Create">Schedule Appointment</button>
+    @Html.ActionLink("Search", "List", "Search", new { @class = "btn btn-info", @id = "addressSearch" })
+
 </p>
 
 <table class="table">

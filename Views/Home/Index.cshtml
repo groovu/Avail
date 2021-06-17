@@ -12,10 +12,9 @@
         font-family: 'Roboto Mono', monospace;
     }
 </style>
-    <p>
-        <a asp-controller="Avails" asp-action="Create">Create New</a>
-        <a asp-controller="Avails" asp-action="Update">Update or Delete Appointment</a>
-    </p>
+<p>
+    <a class="btn btn-info" asp-controller="Avails" asp-action="Create">Schedule Appointment</a>
+</p>
 
     <table class="table">
         <thead>
@@ -28,7 +27,10 @@
                     <th>Email</th>
                     <th>Notes</th>
                     <th>Commands</th>
-                }
+                } else
+            {
+                <th>Update</th>
+            }
             </tr>
         </thead>
         @for (int i = 0; i < ViewBag.next5.Count; i += 1)
@@ -61,11 +63,17 @@
                             <td>@ViewBag.next5[i][j].Email</td>
                             <td>@ViewBag.next5[i][j].Note</td>
                             <td>
-                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:blue" asp-controller="Avails" asp-action="Edit" asp-route-id="@ViewBag.next5[i][j].Id">Edit</button>
-                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:green" asp-controller="Avails" asp-action="Details" asp-route-id="@ViewBag.next5[i][j].Id">Details</button>
-                                <button type="submit" value="Submit" class="btn btn-primary" style="background-color:red" asp-controller="Avails" asp-action="Edit" asp-route-id="@ViewBag.next5[i][j].Id">Delete</button>
+                                <a class="btn btn-info" asp-controller="Avails" asp-action="Edit" asp-route-id="@ViewBag.next5[i][j].Id">Edit</a>
+                                <a class="btn btn-info" asp-controller="Avails" asp-action="Details" asp-route-id="@ViewBag.next5[i][j].Id">Details</a>
+                                <a class="btn btn-info" asp-controller="Avails" asp-action="Delete" asp-route-id="@ViewBag.next5[i][j].Id">Delete</a>
                             </td>
                         }
+                        else
+                    {
+                    <td>
+                        <a class="btn btn-info" asp-controller="Avails" asp-action="Update" asp-route-id="@ViewBag.next5[i][j].Id">Edit or Cancel</a>
+                    </td>
+                    }
                     </tr>
                 }
             </tbody>

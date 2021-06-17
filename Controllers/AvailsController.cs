@@ -77,6 +77,34 @@ namespace Availibility2.Controllers
             //return View(avail);
         }
 
+        public int PreEdit(string secret)
+        {
+            foreach (var i in _context.Avail)
+            {
+                if (i.Secret == secret) {
+                    return i.Id;
+                }
+            }
+            return -1;
+        }
+        public async Task<IActionResult> Edit2(string secret)
+        {
+            int id = PreEdit(secret);
+            if (id == -1)
+            {
+                return NotFound();
+            }
+
+            var avail = await _context.Avail.FindAsync(id);
+            if (avail == null)
+            {
+                return NotFound();
+            }
+            return View(avail);
+        }
+
+
+
         // GET: Avails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
